@@ -26,7 +26,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerStartWorking($user_id, $today_date_info)
+    public function registerStartWork($user_id, $today_date_info)
     {
         $daily_work_info = $this->dailyWorkInfo;
 
@@ -44,7 +44,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerEndWorking($user_id, $today_date_info)
+    public function registerEndWork($user_id, $today_date_info)
     {
         $daily_work_info = $this->dailyWorkInfo
             ->where('user_id', $user_id)
@@ -70,7 +70,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
      * @param string $today_date
      * @return bool
      */
-    public function checkStartWorking($user_id, $today_date_info)
+    public function checkStartWork($user_id, $today_date_info)
     {
         return $this->dailyWorkInfo
             ->where('user_id', $user_id)
@@ -86,7 +86,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
      * @param string $today_date
      * @return bool
      */
-    public function checkEndWorking($user_id, $today_date_info)
+    public function checkEndWork($user_id, $today_date_info)
     {
         return $this->dailyWorkInfo
             ->where('user_id', $user_id)

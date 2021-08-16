@@ -39,15 +39,15 @@ class TimeManagementController extends Controller
      *
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerStartWorking()
+    public function registerStartWork()
     {
         $user_id = Auth::id();
         $today_date_info = Carbon::now();
         
         // 既に出勤登録されているか確認
-        if (!$this->timeManagementServices->checkStartWorking($user_id, $today_date_info)) {
+        if (!$this->timeManagementServices->checkStartWork($user_id, $today_date_info)) {
             // 出勤登録
-            $this->timeManagementServices->registerStartWorking($user_id, $today_date_info);
+            $this->timeManagementServices->registerStartWork($user_id, $today_date_info);
         }
         
         return redirect(route('time.management.index'));
@@ -58,15 +58,15 @@ class TimeManagementController extends Controller
      *
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerEndWorking()
+    public function registerEndWork()
     {
         $user_id = Auth::id();
         $today_date_info = Carbon::now();
 
         // 既に退勤登録されているか確認
-        if (!$this->timeManagementServices->checkEndWorking($user_id, $today_date_info)) {
+        if (!$this->timeManagementServices->checkEndWork($user_id, $today_date_info)) {
             // 退勤登録
-            $this->timeManagementServices->registerEndWorking($user_id, $today_date_info);
+            $this->timeManagementServices->registerEndWork($user_id, $today_date_info);
         }
         
         return redirect(route('time.management.index'));

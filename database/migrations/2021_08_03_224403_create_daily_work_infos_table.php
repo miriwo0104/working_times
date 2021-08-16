@@ -33,7 +33,7 @@ class CreateDailyWorkInfosTable extends Migration
                 ->integer('daily_total_work_minutes')
                 ->nullable()
                 ->comment('労働開始日時から労働終了日時までの合計分数');
-                $table
+            $table
                 ->integer('daily_total_rest_minutes')
                 ->nullable()
                 ->comment('日毎の休憩時間の合計分数');

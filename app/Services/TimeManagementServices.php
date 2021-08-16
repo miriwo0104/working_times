@@ -28,10 +28,10 @@ class TimeManagementServices
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerStartWorking($user_id, $today_date_info)
+    public function registerStartWork($user_id, $today_date_info)
     {
-        if (!$this->timeManagementRpository->checkStartWorking($user_id, $today_date_info)) {
-            return $this->timeManagementRpository->registerStartWorking($user_id, $today_date_info);
+        if (!$this->timeManagementRpository->checkStartWork($user_id, $today_date_info)) {
+            return $this->timeManagementRpository->registerStartWork($user_id, $today_date_info);
         }
     }
 
@@ -42,9 +42,9 @@ class TimeManagementServices
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerEndWorking($user_id, $today_date_info)
+    public function registerEndWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->registerEndWorking($user_id, $today_date_info);
+        return $this->timeManagementRpository->registerEndWork($user_id, $today_date_info);
     }
 
     /**
@@ -55,9 +55,9 @@ class TimeManagementServices
      * @param string $today_date
      * @return bool
      */
-    public function checkStartWorking($user_id, $today_date_info)
+    public function checkStartWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->checkStartWorking($user_id, $today_date_info);
+        return $this->timeManagementRpository->checkStartWork($user_id, $today_date_info);
     }
 
     /**
@@ -68,8 +68,8 @@ class TimeManagementServices
      * @param string $today_date
      * @return bool
      */
-    public function checkEndWorking($user_id, $today_date_info)
+    public function checkEndWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->checkEndWorking($user_id, $today_date_info);
+        return $this->timeManagementRpository->checkEndWork($user_id, $today_date_info);
     }
 }

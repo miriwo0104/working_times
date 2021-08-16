@@ -11,7 +11,7 @@ interface TimeManagementRepositoryInterface
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerStartWorking($user_id, $today_date_info);
+    public function registerStartWork($user_id, $today_date_info);
 
     /**
      * 退勤登録
@@ -20,7 +20,7 @@ interface TimeManagementRepositoryInterface
      * @param string $today_date
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerEndWorking($user_id, $today_date_info);
+    public function registerEndWork($user_id, $today_date_info);
 
     /**
      * 既に出勤登録されているかをチェックする
@@ -30,7 +30,7 @@ interface TimeManagementRepositoryInterface
      * @param string $today_date
      * @return bool
      */
-    public function checkStartWorking($user_id, $today_date_info);
+    public function checkStartWork($user_id, $today_date_info);
 
     /**
      * 既に退勤登録されているかをチェックする
@@ -40,5 +40,5 @@ interface TimeManagementRepositoryInterface
      * @param string $today_date
      * @return bool
      */
-    public function checkEndWorking($user_id, $today_date_info);
+    public function checkEndWork($user_id, $today_date_info);
 }
