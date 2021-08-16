@@ -31,10 +31,10 @@ Route::middleware('auth')->prefix('time/management')->name('time.management.')->
         ->name('index');
 
     // 出勤登録
-    Route::post('/register/start/working', [TimeManagementController::class, 'registerStartWorking'])
-        ->name('register_start_working');
+    Route::post('/register/start/work', [TimeManagementController::class, 'registerStartWork'])
+        ->name('register_start_work');
 
     // 退勤登録
-    Route::post('/register/end/working', [TimeManagementController::class, 'registerEndWorking'])
-        ->name('register_end_working');
+    Route::post('/register/end/work', [TimeManagementController::class, 'registerEndWork'])
+        ->name('register_end_work');
 });
