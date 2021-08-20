@@ -37,4 +37,12 @@ Route::middleware('auth')->prefix('time/management')->name('time.management.')->
     // 退勤登録
     Route::post('/register/end/work', [TimeManagementController::class, 'registerEndWork'])
         ->name('register_end_work');
+
+    // 休憩開始登録
+    Route::post('/register/start/rest', [TimeManagementController::class, 'registerStartRest'])
+        ->name('register_start_rest');
+
+    // 休憩終了登録
+    Route::post('/register/end/rest', [TimeManagementController::class, 'registerEndRest'])
+        ->name('register_end_rest');
 });
