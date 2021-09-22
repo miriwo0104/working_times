@@ -40,4 +40,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * usersテーブル → daily_work_infosテーブルのリレーション
+     */
+    public function daily_work_infos()
+    {
+        return $this->hasMany('App\Models\DailyWorkInfo', 'user_id');
+    }
 }

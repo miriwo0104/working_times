@@ -10,4 +10,12 @@ class RestInfo extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    /**
+     * rest_infosテーブル → daily_work_infosテーブルのリレーション
+     */
+    public function daily_work_infos()
+    {
+        return $this->belongsTo('App\Models\DailyWorkInfo', 'id');
+    }
 }
