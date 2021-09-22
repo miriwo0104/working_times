@@ -21,8 +21,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
     public function __construct(
         DailyWorkInfo $dailyWorkInfo,
         RestInfo $restInfo
-    )
-    {
+    ) {
         $this->dailyWorkInfo = $dailyWorkInfo;
         $this->restInfo = $restInfo;
     }
@@ -102,7 +101,7 @@ class TimeManagementRepository implements TimeManagementRepositoryInterface
         // リンクするdaily_work_infoテーブルのレコードのidを格納
         $rest_info->daily_work_infos_id = $daily_work_info->id;
 
-        return $rest_info->save();       
+        return $rest_info->save();
     }
 
     /**

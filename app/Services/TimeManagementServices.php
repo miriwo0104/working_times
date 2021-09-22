@@ -16,8 +16,7 @@ class TimeManagementServices
 
     public function __construct(
         TimeManagementRepository $timeManagementRpository
-    )
-    {
+    ) {
         $this->timeManagementRpository = $timeManagementRpository;
     }
 
@@ -37,7 +36,7 @@ class TimeManagementServices
 
     /**
      * 退勤登録
-     *     
+     *
      * @param int $user_id
      * @param Carbon $today_date_info
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null

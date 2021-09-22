@@ -25,7 +25,7 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 // 認証必須
-Route::middleware('auth')->prefix('time/management')->name('time.management.')->group(function(){
+Route::middleware('auth')->prefix('time/management')->name('time.management.')->group(function () {
     // 出勤退勤休憩登録ページ
     Route::get('/index', [TimeManagementController::class, 'index'])
         ->name('index');

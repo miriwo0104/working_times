@@ -19,8 +19,7 @@ class TimeManagementController extends Controller
 
     public function __construct(
         TimeManagementServices $timeManagementServices
-    )
-    {
+    ) {
         $this->timeManagementServices = $timeManagementServices;
     }
 
