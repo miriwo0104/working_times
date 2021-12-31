@@ -27,22 +27,13 @@ require __DIR__.'/auth.php';
 // 認証必須
 Route::middleware('auth')->prefix('time/management')->name('time.management.')->group(function () {
     // 出勤退勤休憩登録ページ
-    Route::get('/index', [TimeManagementController::class, 'index'])
-        ->name('index');
-
+    Route::get('/index', [TimeManagementController::class, 'index'])->name('index');
     // 出勤登録
-    Route::post('/register/start/work', [TimeManagementController::class, 'registerStartWork'])
-        ->name('register_start_work');
-
+    Route::post('/register/start/work', [TimeManagementController::class, 'registerStartWork'])->name('register_start_work');
     // 退勤登録
-    Route::post('/register/end/work', [TimeManagementController::class, 'registerEndWork'])
-        ->name('register_end_work');
-
+    Route::post('/register/end/work', [TimeManagementController::class, 'registerEndWork'])->name('register_end_work');
     // 休憩開始登録
-    Route::post('/register/start/rest', [TimeManagementController::class, 'registerStartRest'])
-        ->name('register_start_rest');
-
+    Route::post('/register/start/rest', [TimeManagementController::class, 'registerStartRest'])->name('register_start_rest');
     // 休憩終了登録
-    Route::post('/register/end/rest', [TimeManagementController::class, 'registerEndRest'])
-        ->name('register_end_rest');
+    Route::post('/register/end/rest', [TimeManagementController::class, 'registerEndRest'])->name('register_end_rest');
 });
