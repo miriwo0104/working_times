@@ -16,7 +16,7 @@
                             出勤
                         </button>
                     </form>
-                    <form action={{ route('management.register_end_work') }} method="post">
+                    <form action={{ route('management.end.work') }} method="post">
                         @csrf
                         <button>
                             退勤
@@ -24,13 +24,13 @@
                     </form>
                     {{-- 出勤登録済み & 退勤前のみ下記ボタンを表示 --}}
                     @if (true)
-                        <form action={{ route('management.register_start_rest') }} method="post">
+                        <form action={{ route('management.start.rest') }} method="post">
                             @csrf
                             <button>
                                 休憩開始
                             </button>
                         </form>
-                        <form action={{ route('management.register_end_rest') }} method="post">
+                        <form action={{ route('management.end.rest') }} method="post">
                             @csrf
                             <button>
                                 休憩終了

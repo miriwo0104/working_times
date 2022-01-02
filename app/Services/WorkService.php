@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\WorkRepositoryInterface as WorkRepository;
-use Carbon\Carbon;
+use App\Models\Work;
 
 class WorkService
 {
@@ -19,8 +19,43 @@ class WorkService
         $this->workRepository = $workRepository;
     }
 
-    public function register(array $worksInfo)
+    /**
+     * worksテーブル登録
+     *
+     * @param array $worksInfo
+     * @return Work|null
+     */
+    public function register(array $worksInfo) : ?Work
     {
         return $this->workRepository->register($worksInfo);
+    }
+
+    /**
+     * 退勤処理
+     *
+     * @param array $worksInfo
+     * @return Work|null
+     */
+    public function endWork(array $worksInfo) : int
+    {
+        $works = $this->getByDaysId($worksInfo['days_id']);
+
+        if (isset($works)) {
+            $worksInfo['id'] = $works->id;
+            return $this->workRepository->endWork($worksInfo);
+        } 
+
+        return false;
+    }
+
+    /**
+     * daysテーブルのidから勤務中のworksテーブルの情報を返す
+     *
+     * @param integer $daysId
+     * @return Work|null
+     */
+    public function getByDaysId(int $daysId) : ?Work
+    {
+        return $this->workRepository->getByDaysId($daysId);
     }
 }

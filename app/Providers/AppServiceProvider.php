@@ -13,13 +13,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // DayRepository
         $this->app->bind(
             \App\Repositories\DayRepositoryInterface::class,
             \App\Repositories\DayRepository::class
         );
+        // WorkRepository
         $this->app->bind(
             \App\Repositories\WorkRepositoryInterface::class,
             \App\Repositories\WorkRepository::class
+        );
+        // RestRepository
+        $this->app->bind(
+            \App\Repositories\RestRepositoryInterface::class,
+            \App\Repositories\RestRepository::class
         );
     }
 

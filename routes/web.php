@@ -31,9 +31,9 @@ Route::middleware('auth')->prefix('management')->name('management.')->group(func
     // 出勤登録
     Route::post('/register/start/work', [ManagementController::class, 'startWork'])->name('start.work');
     // 退勤登録
-    Route::post('/register/end/work', [ManagementController::class, 'registerEndWork'])->name('register_end_work');
+    Route::post('/register/end/work', [ManagementController::class, 'endWork'])->name('end.work');
     // 休憩開始登録
-    Route::post('/register/start/rest', [ManagementController::class, 'registerStartRest'])->name('register_start_rest');
+    Route::post('/register/start/rest', [ManagementController::class, 'startRest'])->name('start.rest');
     // 休憩終了登録
-    Route::post('/register/end/rest', [ManagementController::class, 'registerEndRest'])->name('register_end_rest');
+    Route::post('/register/end/rest', [ManagementController::class, 'endRest'])->name('end.rest');
 });

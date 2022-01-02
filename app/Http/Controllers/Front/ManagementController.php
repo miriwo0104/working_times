@@ -31,10 +31,10 @@ class ManagementController extends Controller
         return view('front/managements/index');
     }
 
+
     /**
      * 出勤登録
      *
-     * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
     public function startWork()
     {
@@ -50,57 +50,37 @@ class ManagementController extends Controller
     /**
      * 退勤登録
      *
-     * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerEndWork()
+    public function endWork()
     {
-        $user_id = Auth::id();
-        $today_date_info = Carbon::now();
+        $updateResult = $this->managementService->endWork();
 
-        // 既に退勤登録されているか確認
-        if ($this->managementService->checkStartWork($user_id, $today_date_info)) {
-            // 退勤登録
-            $this->managementService->registerEndWork($user_id, $today_date_info);
+        if ($updateResult) {
+            return redirect(route('management.index'));
+        } else {
+            return '更新失敗';
         }
-        
-        return redirect(route('time.management.index'));
     }
 
-    /**
-     * 休憩開始登録
-     *
-     * @return RestInfo|\Illuminate\Database\Eloquent\Model|null
-     */
-    public function registerStartRest()
+    public function startRest()
     {
-        $user_id = Auth::id();
-        $today_date_info = Carbon::now();
+        $registerResult = $this->managementService->startRest();
 
-        if ((!$this->managementService->checkStartRest($user_id, $today_date_info)) && ($this->managementService->checkStartWork($user_id, $today_date_info))) {
-            // 休憩開始登録
-            $this->managementService->registerStartRest($user_id, $today_date_info);
+        if ($registerResult) {
+            return redirect(route('management.index'));
+        } else {
+            return '保存失敗';
         }
-
-        return redirect(route('time.management.index'));
     }
 
-
-    /**
-     * 休憩終了登録
-     *
-     * @return RestInfo|\Illuminate\Database\Eloquent\Model|null
-     */
-    public function registerEndRest()
+    public function endRest()
     {
-        $user_id = Auth::id();
-        $today_date_info = Carbon::now();
-        $a = $this->managementService->checkStartRest($user_id, $today_date_info);
+        $registerResult = $this->managementService->endRest();
 
-        if (($this->managementService->checkStartRest($user_id, $today_date_info)) && ($this->managementService->checkStartWork($user_id, $today_date_info))) {
-            // 休憩終了登録
-            $this->managementService->registerEndRest($user_id, $today_date_info);
+        if ($registerResult) {
+            return redirect(route('management.index'));
+        } else {
+            return '保存失敗';
         }
-
-        return redirect(route('time.management.index'));
     }
 }

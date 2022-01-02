@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Auth;
 use App\Services\DayService;
 use App\Services\WorkService;
+use App\Services\RestService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Throwable;
@@ -22,22 +23,28 @@ class ManagementService
      */
     private $workService;
 
+    /**
+     *
+     * @var RestService
+     */
+    private $restService;
+
     public function __construct(
         DayService $dayService,
-        WorkService $workService
+        WorkService $workService,
+        RestService $restService
     ) {
         $this->dayService = $dayService;
         $this->workService = $workService;
+        $this->restService = $restService;
     }
 
     /**
      * 出勤登録
      *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
+     * @return boolean
      */
-    public function startWork()
+    public function startWork() : bool
     {
         try {
             DB::beginTransaction();
@@ -46,13 +53,14 @@ class ManagementService
 
             $daysInfo = [
                 'user_id' => Auth::id(),
-                'date' => $nowDateTime->format('Y/m/d'),
+                'working_flag' => config('const.flag.true'),
+                'date' => $nowDateTime->format('Y-m-d'),
             ];
             $days = $this->dayService->register($daysInfo);
             
             $worksInfo = [
                 'days_id' => $days->id,
-                'start_date_time' => $nowDateTime->format('Y/m/d H:i:s'),
+                'start_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
             ];
             $works = $this->workService->register($worksInfo);
 
@@ -67,105 +75,96 @@ class ManagementService
     /**
      * 退勤登録
      *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
+     * @return boolean
      */
-    public function registerEndWork($user_id, $today_date_info)
+    public function endWork() : bool
     {
-        return $this->managementRpository->registerEndWork($user_id, $today_date_info);
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * 既に出勤登録されているかをチェックする
-     * 出勤登録されていたらtrueを返す
-     *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return bool
-     */
-    public function checkStartWork($user_id, $today_date_info)
-    {
-        return $this->managementRpository->checkStartWork($user_id, $today_date_info);
-    }
+            $nowDateTime = Carbon::now();
 
-    /**
-     * 既に退勤登録されているかをチェックする
-     * 退勤登録されていたらtrueを返す
-     *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return bool
-     */
-    public function checkEndWork($user_id, $today_date_info)
-    {
-        return $this->managementRpository->checkEndWork($user_id, $today_date_info);
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y-m-d'),
+            ];
+            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+
+            $worksInfo = [
+                'days_id' => $days->id,
+                'end_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
+            ];
+            $works = $this->workService->endWork($worksInfo);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+        return true;
     }
 
     /**
      * 休憩開始登録
      *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return DailyRestInfo|\Illuminate\Database\Eloquent\Model|null
+     * @return boolean
      */
-    public function registerStartRest($user_id, $today_date_info)
+    public function startRest() : bool
     {
-        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
-        
-        if (!is_null($daily_work_info)) {
-            // 休憩開始登録
-            return $this->managementRpository->registerStartRest($user_id, $today_date_info, $daily_work_info);
+        try {
+            DB::beginTransaction();
+
+            $nowDateTime = Carbon::now();
+            
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y-m-d'),
+            ];
+            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+
+            $restsInfo = [
+                'days_id' => $days->id,
+                'start_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
+            ];
+            $rests = $this->restService->register($restsInfo);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
+        return true;
     }
 
     /**
      * 休憩終了登録
      *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return DailyRestInfo|\Illuminate\Database\Eloquent\Model|null
+     * @return boolean
      */
-    public function registerEndRest($user_id, $today_date_info)
+    public function endRest() : bool
     {
-        return $this->managementRpository->registerEndRest($user_id, $today_date_info);
-    }
+        try {
+            DB::beginTransaction();
 
-    /**
-     * 既に休憩開始登録されているかをチェックする
-     * 休憩開始登録されていたらtrueを返す
-     *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return bool
-     */
-    public function checkStartRest($user_id, $today_date_info)
-    {
-        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
-        
-        if (!is_null($daily_work_info)) {
-            return $this->managementRpository->checkStartRest($user_id, $today_date_info);
-        } else {
-            return !is_null($daily_work_info);
+            $nowDateTime = Carbon::now();
+            
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y-m-d'),
+            ];
+            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+
+            $restsInfo = [
+                'days_id' => $days->id,
+                'end_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
+            ];
+            $rests = $this->restService->endRest($restsInfo);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-    }
-
-    /**
-     * 既に休憩終了登録されているかをチェックする
-     * 休憩終了登録されていたらtrueを返す
-     *
-     * @param int $user_id
-     * @param Carbon $today_date_info
-     * @return bool
-     */
-    public function checkEndRest($user_id, $today_date_info)
-    {
-        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
-
-        if (!is_null($daily_work_info)) {
-            return $this->managementRpository->checkEndRest($user_id, $today_date_info);
-        } else {
-            return !is_null($daily_work_info);
-        }
+        return true;
     }
 }
