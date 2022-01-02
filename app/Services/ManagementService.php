@@ -2,22 +2,32 @@
 
 namespace App\Services;
 
-use App\Repositories\TimeManagementRepositoryInterface as TimeManagementRepository;
 use Illuminate\Support\Facades\Auth;
+use App\Services\DayService;
+use App\Services\WorkService;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
-class TimeManagementServices
+class ManagementService
 {
 
     /**
-     * @var TimeManagementRepositoryInterface
+     * @var DayService
      */
-    private $timeManagementRpository;
+    private $dayService;
+
+    /**
+     * @var WorkService
+     */
+    private $workService;
 
     public function __construct(
-        TimeManagementRepository $timeManagementRpository
+        DayService $dayService,
+        WorkService $workService
     ) {
-        $this->timeManagementRpository = $timeManagementRpository;
+        $this->dayService = $dayService;
+        $this->workService = $workService;
     }
 
     /**
@@ -27,11 +37,31 @@ class TimeManagementServices
      * @param Carbon $today_date_info
      * @return DailyWorkInfo|\Illuminate\Database\Eloquent\Model|null
      */
-    public function registerStartWork($user_id, $today_date_info)
+    public function startWork()
     {
-        if (!$this->timeManagementRpository->checkStartWork($user_id, $today_date_info)) {
-            return $this->timeManagementRpository->registerStartWork($user_id, $today_date_info);
+        try {
+            DB::beginTransaction();
+
+            $nowDateTime = Carbon::now();
+
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y/m/d'),
+            ];
+            $days = $this->dayService->register($daysInfo);
+            
+            $worksInfo = [
+                'days_id' => $days->id,
+                'start_date_time' => $nowDateTime->format('Y/m/d H:i:s'),
+            ];
+            $works = $this->workService->register($worksInfo);
+
+            DB::commit();
+        } catch (Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
+        return true;
     }
 
     /**
@@ -43,7 +73,7 @@ class TimeManagementServices
      */
     public function registerEndWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->registerEndWork($user_id, $today_date_info);
+        return $this->managementRpository->registerEndWork($user_id, $today_date_info);
     }
 
     /**
@@ -56,7 +86,7 @@ class TimeManagementServices
      */
     public function checkStartWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->checkStartWork($user_id, $today_date_info);
+        return $this->managementRpository->checkStartWork($user_id, $today_date_info);
     }
 
     /**
@@ -69,7 +99,7 @@ class TimeManagementServices
      */
     public function checkEndWork($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->checkEndWork($user_id, $today_date_info);
+        return $this->managementRpository->checkEndWork($user_id, $today_date_info);
     }
 
     /**
@@ -81,11 +111,11 @@ class TimeManagementServices
      */
     public function registerStartRest($user_id, $today_date_info)
     {
-        $daily_work_info = $this->timeManagementRpository->getDailyWorkInfo($user_id, $today_date_info);
+        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
         
         if (!is_null($daily_work_info)) {
             // 休憩開始登録
-            return $this->timeManagementRpository->registerStartRest($user_id, $today_date_info, $daily_work_info);
+            return $this->managementRpository->registerStartRest($user_id, $today_date_info, $daily_work_info);
         }
     }
 
@@ -98,7 +128,7 @@ class TimeManagementServices
      */
     public function registerEndRest($user_id, $today_date_info)
     {
-        return $this->timeManagementRpository->registerEndRest($user_id, $today_date_info);
+        return $this->managementRpository->registerEndRest($user_id, $today_date_info);
     }
 
     /**
@@ -111,10 +141,10 @@ class TimeManagementServices
      */
     public function checkStartRest($user_id, $today_date_info)
     {
-        $daily_work_info = $this->timeManagementRpository->getDailyWorkInfo($user_id, $today_date_info);
+        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
         
         if (!is_null($daily_work_info)) {
-            return $this->timeManagementRpository->checkStartRest($user_id, $today_date_info);
+            return $this->managementRpository->checkStartRest($user_id, $today_date_info);
         } else {
             return !is_null($daily_work_info);
         }
@@ -130,10 +160,10 @@ class TimeManagementServices
      */
     public function checkEndRest($user_id, $today_date_info)
     {
-        $daily_work_info = $this->timeManagementRpository->getDailyWorkInfo($user_id, $today_date_info);
+        $daily_work_info = $this->managementRpository->getDailyWorkInfo($user_id, $today_date_info);
 
         if (!is_null($daily_work_info)) {
-            return $this->timeManagementRpository->checkEndRest($user_id, $today_date_info);
+            return $this->managementRpository->checkEndRest($user_id, $today_date_info);
         } else {
             return !is_null($daily_work_info);
         }

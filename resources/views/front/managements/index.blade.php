@@ -10,13 +10,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h1 id="time"></h1>
-                    <form action={{ route('time.management.register_start_work') }} method="post">
+                    <form action={{ route('management.start.work') }} method="post">
                         @csrf
                         <button>
                             出勤
                         </button>
                     </form>
-                    <form action={{ route('time.management.register_end_work') }} method="post">
+                    <form action={{ route('management.register_end_work') }} method="post">
                         @csrf
                         <button>
                             退勤
@@ -24,13 +24,13 @@
                     </form>
                     {{-- 出勤登録済み & 退勤前のみ下記ボタンを表示 --}}
                     @if (true)
-                        <form action={{ route('time.management.register_start_rest') }} method="post">
+                        <form action={{ route('management.register_start_rest') }} method="post">
                             @csrf
                             <button>
                                 休憩開始
                             </button>
                         </form>
-                        <form action={{ route('time.management.register_end_rest') }} method="post">
+                        <form action={{ route('management.register_end_rest') }} method="post">
                             @csrf
                             <button>
                                 休憩終了

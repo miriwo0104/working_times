@@ -16,8 +16,8 @@ class CreateWorksTable extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('days_id')->comment('daysテーブルのid');
-            $table->dateTime('start_time')->comment('労働開始日時（YYYY-MM-DD HH:MM:SS）');
-            $table->dateTime('end_time')->nullable()->comment('労働終了日時（YYYY-MM-DD HH:MM:SS）');
+            $table->dateTime('start_date_time')->comment('労働開始日時（YYYY-MM-DD HH:MM:SS）');
+            $table->dateTime('end_date_time')->nullable()->comment('労働終了日時（YYYY-MM-DD HH:MM:SS）');
             $table->softDeletes();
             $table->timestamps();
         });

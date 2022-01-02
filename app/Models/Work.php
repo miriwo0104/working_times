@@ -10,4 +10,10 @@ class Work extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    protected $fillable = [
+        'days_id',
+        'start_date_time',
+        'end_date_time',
+    ];
 }
