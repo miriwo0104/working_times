@@ -54,15 +54,27 @@ class ManagementService
             $daysInfo = [
                 'user_id' => Auth::id(),
                 'working_flag' => config('const.flag.true'),
+                'resting_flag' => config('const.flag.false'),
                 'date' => $nowDateTime->format('Y-m-d'),
             ];
-            $days = $this->dayService->register($daysInfo);
+            // 今日既に出勤登録が行われているかのチェック
+            $days = $this->dayService->getNotWorkingByUserIdAndDate($daysInfo);
+            
+            // 日毎の就業データの登録
+            if (isset($days)) {
+                // 既に出勤登録されていた場合、情報更新
+                $this->dayService->update($days->id, $daysInfo);
+            } else {
+                // まだ出勤登録されていない場合、作成
+                $days = $this->dayService->register($daysInfo);
+            }
             
             $worksInfo = [
                 'days_id' => $days->id,
                 'start_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
             ];
-            $works = $this->workService->register($worksInfo);
+            // 個別の就業データの登録
+            $this->workService->register($worksInfo);
 
             DB::commit();
         } catch (Throwable $th) {
@@ -75,9 +87,8 @@ class ManagementService
     /**
      * 退勤登録
      *
-     * @return boolean
      */
-    public function endWork() : bool
+    public function endWork()
     {
         try {
             DB::beginTransaction();
@@ -87,14 +98,19 @@ class ManagementService
             $daysInfo = [
                 'user_id' => Auth::id(),
                 'date' => $nowDateTime->format('Y-m-d'),
+                'working_flag' => config('const.flag.false'),
             ];
-            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+            // 出勤中の日毎の就業データを取得
+            $days = $this->dayService->getWorkingByUserIdAndDate($daysInfo);
+            // 日毎の就業データの退勤登録
+            $result = $this->dayService->update($days->id, $daysInfo);
 
             $worksInfo = [
                 'days_id' => $days->id,
                 'end_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
             ];
-            $works = $this->workService->endWork($worksInfo);
+            // 個別の就業データの退勤登録
+            $this->workService->endWork($worksInfo);
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -119,14 +135,19 @@ class ManagementService
             $daysInfo = [
                 'user_id' => Auth::id(),
                 'date' => $nowDateTime->format('Y-m-d'),
+                'resting_flag' => config('const.flag.true'),
             ];
-            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+            // 出勤中の日毎の就業データを取得
+            $days = $this->dayService->getWorkingByUserIdAndDate($daysInfo);
+            // 日毎の就業データの休憩開始登録
+            $this->dayService->update($days->id, $daysInfo);
 
             $restsInfo = [
                 'days_id' => $days->id,
                 'start_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
             ];
-            $rests = $this->restService->register($restsInfo);
+            // 休憩データの開始登録
+            $this->restService->register($restsInfo);
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -151,14 +172,19 @@ class ManagementService
             $daysInfo = [
                 'user_id' => Auth::id(),
                 'date' => $nowDateTime->format('Y-m-d'),
+                'resting_flag' => config('const.flag.false'),
             ];
-            $days = $this->dayService->getByUserIdAndDate($daysInfo);
+            // 出勤中の日毎の就業データを取得
+            $days = $this->dayService->getWorkingByUserIdAndDate($daysInfo);
+            // 日毎の就業データの休憩終了登録
+            $this->dayService->update($days->id, $daysInfo);
 
             $restsInfo = [
                 'days_id' => $days->id,
                 'end_date_time' => $nowDateTime->format('Y-m-d H:i:s'),
             ];
-            $rests = $this->restService->endRest($restsInfo);
+            // 休憩データの終了登録
+            $this->restService->endRest($restsInfo);
 
             DB::commit();
         } catch (\Throwable $th) {
@@ -166,5 +192,28 @@ class ManagementService
             throw $th;
         }
         return true;
+    }
+
+    /**
+     * 本日 or 昨日出勤してから退勤していない日毎の就業データを返す
+     *
+     * @return Day|null
+     */
+    public function getDays()
+    {
+        try {
+            $nowDateTime = Carbon::now();
+    
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y-m-d'),
+            ];
+            $days = $this->dayService->getWorkingByUserIdAndDate($daysInfo);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $days;
     }
 }

@@ -40,16 +40,31 @@ class DayRepository implements DayRepositoryInterface
     }
 
     /**
-     * ユーザーIDと日にち情報からレコードを取得して返す
+     * ユーザーIDと日にち情報から出勤中のレコードを取得して返す
      *
      * @param array $daysInfo
      * @return Day|null
      */
-    public function getByUserIdAndDate(array $daysInfo) : ?Day
+    public function getWorkingByUserIdAndDate(array $daysInfo) : ?Day
     {
         return $this->day
                     ->where('user_id', $daysInfo['user_id'])
                     ->where('working_flag', config(('const.flag.true')))
+                    ->where('date', $daysInfo['date'])
+                    ->first();
+    }
+
+    /**
+     * ユーザーIDと日にち情報から出勤中のレコードを取得して返す
+     *
+     * @param array $daysInfo
+     * @return Day|null
+     */
+    public function getNotWorkingByUserIdAndDate(array $daysInfo) : ?Day
+    {
+        return $this->day
+                    ->where('user_id', $daysInfo['user_id'])
+                    ->where('working_flag', config(('const.flag.false')))
                     ->where('date', $daysInfo['date'])
                     ->first();
     }

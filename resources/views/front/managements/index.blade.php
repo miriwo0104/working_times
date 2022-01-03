@@ -10,26 +10,47 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h1 id="time"></h1>
-                    <form action={{ route('management.start.work') }} method="post">
-                        @csrf
-                        <button>
-                            出勤
-                        </button>
-                    </form>
-                    <form action={{ route('management.end.work') }} method="post">
-                        @csrf
-                        <button>
-                            退勤
-                        </button>
-                    </form>
-                    {{-- 出勤登録済み & 退勤前のみ下記ボタンを表示 --}}
-                    @if (true)
+                    @if ( !isset($days) || $days['working_flag'] === config('const.flag.false') )
+                    {{-- 出勤前のみ下記ボタンを表示 --}}
+                        <form action={{ route('management.start.work') }} method="post">
+                            @csrf
+                            <button>
+                                出勤
+                            </button>
+                        </form>
+                    @endif
+                    @if (
+                        isset($days) &&
+                        $days['working_flag'] === config('const.flag.true') &&
+                        $days['resting_flag'] === config('const.flag.false')
+                    )
+                        {{-- 出勤中のみ下記ボタンを表示 --}}
+                        <form action={{ route('management.end.work') }} method="post">
+                            @csrf
+                            <button>
+                                退勤
+                            </button>
+                        </form>
+                    @endif
+                    @if (
+                        isset($days) &&
+                        $days['working_flag'] === config('const.flag.true') &&
+                        $days['resting_flag'] === config('const.flag.false') 
+                    )
+                    {{-- 出勤中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.start.rest') }} method="post">
                             @csrf
                             <button>
                                 休憩開始
                             </button>
                         </form>
+                    @endif
+                    @if (
+                        isset($days) &&
+                        $days['working_flag'] === config('const.flag.true') &&
+                        $days['resting_flag'] === config('const.flag.true')
+                    )
+                        {{-- 休憩中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.end.rest') }} method="post">
                             @csrf
                             <button>

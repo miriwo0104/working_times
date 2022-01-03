@@ -14,6 +14,7 @@ class Day extends Model
     protected $fillable = [
         'user_id',
         'working_flag',
+        'resting_flag',
         'date',
         'total_work_minutes',
         'total_rest_minutes',

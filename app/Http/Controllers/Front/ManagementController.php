@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 use App\Services\ManagementService;
 
 class ManagementController extends Controller
@@ -28,7 +26,8 @@ class ManagementController extends Controller
      */
     public function index()
     {
-        return view('front/managements/index');
+        $days = $this->managementService->getDays();
+        return view('front/managements/index', ['days' => $days]);
     }
 
 

@@ -23,11 +23,19 @@ interface DayRepositoryInterface
     public function getById(int $id) : ?Day;
 
     /**
-     * ユーザーIDと日にち情報からレコードを取得して返す
+     * ユーザーIDと日にち情報から出勤中のレコードを取得して返す
      *
      * @param array $daysInfo
      * @return Day|null
      */
-    public function getByUserIdAndDate(array $info) : ?Day;
+    public function getWorkingByUserIdAndDate(array $daysInfo) : ?Day;
+
+    /**
+     * ユーザーIDと日にち情報から出勤中のレコードを取得して返す
+     *
+     * @param array $daysInfo
+     * @return Day|null
+     */
+    public function getNotWorkingByUserIdAndDate(array $daysInfo) : ?Day;
 }
 
