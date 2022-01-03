@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Repositories\RestRepositoryInterface as RestRepository;
+use App\Repositories\RestRepository;
 use App\Models\Rest;
+use Carbon\Carbon;
 
 class RestService
 {
@@ -75,5 +76,20 @@ class RestService
     public function getByDaysId(int $daysId) : ?Rest
     {
         return $this->restRepository->getByDaysId($daysId);
+    }
+
+    public function totalSeconds(int $daysId)
+    {
+        $works = $this->restRepository->total($daysId);
+
+        $totalTimeSeconds = 0;
+        foreach ($works as $work) {
+            $startDateTime = new Carbon($work['start_date_time']);
+            $endDateTime = new Carbon($work['end_date_time']);
+
+            $totalTimeSeconds = $totalTimeSeconds + $startDateTime->diffInSeconds($endDateTime);
+        }
+
+        return $totalTimeSeconds;
     }
 }

@@ -117,7 +117,37 @@ class ManagementService
             DB::rollBack();
             throw $th;
         }
+        // 時間の算出
+        $this->dayTotal($days->id);
         return true;
+    }
+
+    public function dayTotal(int $daysId)
+    {
+        try {
+            DB::beginTransaction();
+
+            $days = $this->dayService->getById($daysId);
+
+            // 現時点での仕事の合計時間（秒）
+            $worksTotalTimeSeconds = $this->workService->totalSeconds($daysId);
+            // 現時点での休憩の合計時間（秒）
+            $restsTotalTimeSeconds = $this->restService->totalSeconds($daysId);
+            // 実働時間算出
+            $actualWorkTimeSeconds = $worksTotalTimeSeconds - $restsTotalTimeSeconds;
+
+            $daysInfo = [
+                'total_work_seconds' => $worksTotalTimeSeconds,
+                'total_rest_seconds' => $restsTotalTimeSeconds,
+                'total_actual_work_seconds' => $actualWorkTimeSeconds,
+            ];
+            $this->dayService->update($daysId, $daysInfo);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**

@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Repositories\WorkRepositoryInterface as WorkRepository;
+use App\Repositories\WorkRepository;
 use App\Models\Work;
+use Carbon\Carbon;
 
 class WorkService
 {
@@ -57,5 +58,20 @@ class WorkService
     public function getByDaysId(int $daysId) : ?Work
     {
         return $this->workRepository->getByDaysId($daysId);
+    }
+
+    public function totalSeconds(int $daysId)
+    {
+        $works = $this->workRepository->total($daysId);
+
+        $totalTimeSeconds = 0;
+        foreach ($works as $work) {
+            $startDateTime = new Carbon($work['start_date_time']);
+            $endDateTime = new Carbon($work['end_date_time']);
+
+            $totalTimeSeconds = $totalTimeSeconds + $startDateTime->diffInSeconds($endDateTime);
+        }
+
+        return $totalTimeSeconds;
     }
 }

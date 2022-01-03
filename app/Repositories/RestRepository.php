@@ -53,7 +53,7 @@ class RestRepository implements RestRepositoryInterface
     }
 
     /**
-     * days.idを使って勤務中のレコードを取得して返す
+     * days.idを使って休憩中のレコードを取得して返す
      *
      * @param integer $daysId
      * @return Rest|null
@@ -64,5 +64,18 @@ class RestRepository implements RestRepositoryInterface
                     ->where('days_id', $daysId)
                     ->whereNull('end_date_time')
                     ->first();
+    }
+
+    /**
+     * days.idに紐づく休憩情報返す
+     *
+     * @param integer $daysId
+     * @return Rest|null
+     */
+    public function total(int $daysId)
+    {
+        return $this->rest
+                    ->where('days_id', $daysId)
+                    ->get();
     }
 }

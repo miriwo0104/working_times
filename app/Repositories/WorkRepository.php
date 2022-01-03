@@ -65,4 +65,17 @@ class WorkRepository implements WorkRepositoryInterface
                     ->whereNull('end_date_time')
                     ->first();
     }
+
+    /**
+     * days.idに紐づく勤務情報を返す
+     *
+     * @param integer $daysId
+     * @return Work|null
+     */
+    public function total(int $daysId)
+    {
+        return $this->work
+                    ->where('days_id', $daysId)
+                    ->get();
+    }
 }
