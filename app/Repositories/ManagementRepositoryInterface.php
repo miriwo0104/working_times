@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-interface TimeManagementRepositoryInterface
+interface ManagementRepositoryInterface
 {
     /**
      * 出勤登録

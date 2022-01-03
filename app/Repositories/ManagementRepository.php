@@ -6,7 +6,7 @@ use App\Models\DailyWorkInfo;
 use App\Models\RestInfo;
 use Carbon\Carbon;
 
-class TimeManagementRepository implements TimeManagementRepositoryInterface
+class ManagementRepository implements ManagementRepositoryInterface
 {
     /**
      * @var DailyWorkInfo
