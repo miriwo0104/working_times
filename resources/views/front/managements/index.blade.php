@@ -14,9 +14,11 @@
                     {{-- 出勤前のみ下記ボタンを表示 --}}
                         <form action={{ route('management.start.work') }} method="post">
                             @csrf
-                            <button>
-                                出勤
-                            </button>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">
+                                    出勤
+                                </button>
+                            </div>
                         </form>
                     @endif
                     @if (
@@ -27,9 +29,11 @@
                         {{-- 出勤中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.end.work') }} method="post">
                             @csrf
-                            <button>
-                                退勤
-                            </button>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-danger" type="submit">
+                                    退勤
+                                </button>
+                            </div>
                         </form>
                     @endif
                     @if (
@@ -40,9 +44,11 @@
                     {{-- 出勤中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.start.rest') }} method="post">
                             @csrf
-                            <button>
-                                休憩開始
-                            </button>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" type="submit">
+                                    休憩開始
+                                </button>
+                            </div>
                         </form>
                     @endif
                     @if (
@@ -53,9 +59,11 @@
                         {{-- 休憩中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.end.rest') }} method="post">
                             @csrf
-                            <button>
-                                休憩終了
-                            </button>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-success" type="submit">
+                                    休憩終了
+                                </button>
+                            </div>
                         </form>
                     @endif
                 </div>

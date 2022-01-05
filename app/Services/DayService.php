@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\DayRepositoryInterface as DayRepository;
+use App\Repositories\DayRepository;
 use Carbon\Carbon;
 use App\Models\Day;
 
