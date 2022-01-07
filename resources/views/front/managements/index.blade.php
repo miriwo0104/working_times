@@ -74,26 +74,28 @@
                     <div>
                         <h5>過去の勤怠情報</h5>
                     </div>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">日にち</th>
-                                <th scope="col">働いた時間</th>
-                                <th scope="col">実稼働時間</th>
-                                <th scope="col">休憩時間</th>
-                            </tr>
-                        </thead>
-                        @foreach ($pastDays as $pastDay)
-                            <tbody>
+                    @if (isset($pastDays))
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>{{ $pastDay['date'] }}</td>
-                                    <td>{{ $pastDay['total_work_seconds'] }}</td>
-                                    <td>{{ $pastDay['total_actual_work_seconds'] }}</td>
-                                    <td>{{ $pastDay['total_rest_seconds'] }}</td>
+                                    <th scope="col">日にち</th>
+                                    <th scope="col">働いた時間</th>
+                                    <th scope="col">実稼働時間</th>
+                                    <th scope="col">休憩時間</th>
                                 </tr>
-                            </tbody>
-                        @endforeach
-                    </table>
+                            </thead>
+                            @foreach ($pastDays as $pastDay)
+                                <tbody>
+                                    <tr>
+                                        <td>{{ $pastDay['date'] }}</td>
+                                        <td>{{ $pastDay['total_work_seconds'] }}</td>
+                                        <td>{{ $pastDay['total_actual_work_seconds'] }}</td>
+                                        <td>{{ $pastDay['total_rest_seconds'] }}</td>
+                                    </tr>
+                                </tbody>
+                            @endforeach
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>

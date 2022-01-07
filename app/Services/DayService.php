@@ -88,6 +88,10 @@ class DayService
      */
     public function update(int $id, array $daysInfo) : ?int
     {
+        // days.dateカラムを更新してほしくないので値削除
+        if (isset($daysInfo['date'])) {
+            unset($daysInfo['date']);
+        }
         return $this->dayRepository->update($id, $daysInfo);
     }
 
