@@ -10,6 +10,14 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!
+                    <br>
+                    <div>
+                        <a href="{{ route('management.index') }}">
+                            <button>
+                                勤怠管理
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
