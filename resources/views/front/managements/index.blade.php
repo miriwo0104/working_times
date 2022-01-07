@@ -70,6 +70,31 @@
                         </form>
                     @endif
                 </div>
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <div>
+                        <h5>過去の勤怠情報</h5>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">日にち</th>
+                                <th scope="col">働いた時間</th>
+                                <th scope="col">実稼働時間</th>
+                                <th scope="col">休憩時間</th>
+                            </tr>
+                        </thead>
+                        @foreach ($pastDays as $pastDay)
+                            <tbody>
+                                <tr>
+                                    <td>{{ $pastDay['date'] }}</td>
+                                    <td>{{ $pastDay['total_work_seconds'] }}</td>
+                                    <td>{{ $pastDay['total_actual_work_seconds'] }}</td>
+                                    <td>{{ $pastDay['total_rest_seconds'] }}</td>
+                                </tr>
+                            </tbody>
+                        @endforeach
+                    </table>
+                </div>
             </div>
         </div>
     </div>

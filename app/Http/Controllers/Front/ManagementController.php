@@ -27,7 +27,11 @@ class ManagementController extends Controller
     public function index()
     {
         $days = $this->managementService->getDays();
-        return view('front/managements/index', ['days' => $days]);
+        $pastDays = $this->managementService->getPastDays();
+        return view('front/managements/index', [
+            'days' => $days,
+            'pastDays' => $pastDays,
+        ]);
     }
 
 
