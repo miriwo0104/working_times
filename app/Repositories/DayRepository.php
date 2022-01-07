@@ -64,8 +64,40 @@ class DayRepository implements DayRepositoryInterface
     {
         return $this->day
                     ->where('user_id', $daysInfo['user_id'])
-                    ->where('working_flag', config(('const.flag.false')))
+                    ->where('working_flag', config('const.flag.false'))
                     ->where('date', $daysInfo['date'])
                     ->first();
+    }
+
+    /**
+     * daysテーブルの更新
+     * 更新に影響を与えたレコード数を返す
+     *
+     * @param integer $id
+     * @param array $daysInfo
+     * @return integer|null
+     */
+    public function update(int $id, array $daysInfo) : ?int
+    {
+        $days = $this->getById($id);
+        return $days->update($daysInfo);
+    }
+
+    /**
+     * 本日を含む過去の勤怠情報を返す
+     *
+     * @param array $daysInfo
+     * @return array|null
+     */
+    public function getPastByUserIdAndDate(array $daysInfo) : ?array
+    {
+        return $this->day
+                    ->where('user_id', $daysInfo['user_id'])
+                    ->where('working_flag', config('const.flag.false'))
+                    ->where('resting_flag', config('const.flag.false'))
+                    ->where('date', '<=' ,$daysInfo['date'])
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+                    ->toArray();
     }
 }

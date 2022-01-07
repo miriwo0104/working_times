@@ -6,7 +6,6 @@ use App\Repositories\DayRepository;
 use Carbon\Carbon;
 use App\Models\Day;
 
-
 class DayService
 {
 
@@ -79,9 +78,27 @@ class DayService
         return $days;
     }
 
-    public function update(int $id, array $daysInfo)
+    /**
+     * daysテーブルの更新
+     * 更新に影響を与えたレコード数を返す
+     *
+     * @param integer $id
+     * @param array $daysInfo
+     * @return integer|null
+     */
+    public function update(int $id, array $daysInfo) : ?int
     {
-        $days = $this->getById($id);
-        return $days->update($daysInfo);
+        return $this->dayRepository->update($id, $daysInfo);
+    }
+
+    /**
+     * 本日を含む過去の勤怠情報を返す
+     *
+     * @param array $daysInfo
+     * @return array|null
+     */
+    public function getPastByUserIdAndDate(array $daysInfo) : ?array
+    {
+        return $this->dayRepository->getPastByUserIdAndDate($daysInfo);
     }
 }

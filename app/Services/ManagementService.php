@@ -8,6 +8,7 @@ use App\Services\WorkService;
 use App\Services\RestService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use App\Models\Day;
 use Throwable;
 
 class ManagementService
@@ -250,5 +251,30 @@ class ManagementService
         }
 
         return $days;
+    }
+
+    /**
+     * 本日を含む過去の勤怠情報を返す
+     *
+     * @return array|null
+     */
+    public function getPastDays() : ?array
+    {
+        try {
+
+            $nowDateTime = Carbon::now();
+
+            $daysInfo = [
+                'user_id' => Auth::id(),
+                'date' => $nowDateTime->format('Y-m-d'),
+            ];
+
+            $pastDays = $this->dayService->getPastByUserIdAndDate($daysInfo);
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+
+        return $pastDays;
     }
 }
