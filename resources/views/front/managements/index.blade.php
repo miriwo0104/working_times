@@ -26,6 +26,7 @@
                         $days['working_flag'] === config('const.flag.true') &&
                         $days['resting_flag'] === config('const.flag.false')
                     )
+                        <div>出勤時間: {{ $days['works']['start_date_time'] }}</div>
                         {{-- 出勤中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.end.work') }} method="post">
                             @csrf
@@ -56,6 +57,8 @@
                         $days['working_flag'] === config('const.flag.true') &&
                         $days['resting_flag'] === config('const.flag.true')
                     )
+                        <div>出勤時間: {{ $days['works']['start_date_time'] }}</div>
+                        <div>休憩開始時間: {{ $days['rests']['start_date_time'] }}</div>
                         {{-- 休憩中のみ下記ボタンを表示 --}}
                         <form action={{ route('management.end.rest') }} method="post">
                             @csrf

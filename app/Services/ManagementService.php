@@ -240,6 +240,11 @@ class ManagementService
             ];
             $days = $this->dayService->getWorkingByUserIdAndDate($daysInfo);
 
+            if (isset($days)) {
+                $days['works'] = $this->workService->getByDaysId($days->id);
+                $days['rests'] = $this->restService->getByDaysId($days->id);
+            }
+
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Work;
 
 class Day extends Model
 {
@@ -20,4 +21,9 @@ class Day extends Model
         'total_rest_seconds',
         'total_actual_work_seconds',
     ];
+
+    public function works()
+    {
+        return $this->hasMany(Work::class, 'id', 'days_id');
+    }
 }

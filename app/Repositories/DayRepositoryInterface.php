@@ -31,7 +31,7 @@ interface DayRepositoryInterface
     public function getWorkingByUserIdAndDate(array $daysInfo) : ?Day;
 
     /**
-     * ユーザーIDと日にち情報から出勤中のレコードを取得して返す
+     * ユーザーIDと日にち情報から退勤したレコードを取得して返す
      *
      * @param array $daysInfo
      * @return Day|null
