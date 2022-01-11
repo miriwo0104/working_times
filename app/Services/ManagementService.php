@@ -271,10 +271,32 @@ class ManagementService
 
             $pastDays = $this->dayService->getPastByUserIdAndDate($daysInfo);
 
+            // 秒数 → 時間への変換
+            if (isset($pastDays)) {
+                foreach ($pastDays as &$pastDay) {
+                    $pastDay['total_work_hour'] = $this->convertSecondsToHour($pastDay['total_work_seconds']);
+                    $pastDay['total_actual_work_hour'] = $this->convertSecondsToHour($pastDay['total_actual_work_seconds']);
+                    $pastDay['total_rest_hour'] = $this->convertSecondsToHour($pastDay['total_rest_seconds']);
+                }
+            }
+
         } catch (\Throwable $th) {
             throw $th;
         }
 
         return $pastDays;
+    }
+
+    /**
+     * 秒数を時間に直す
+     * 時間は少数第二位までのfloadで返す
+     *
+     * @param integer $seconds
+     * @return float
+     */
+    public function convertSecondsToHour(int $seconds) : float
+    {
+        $hour = $seconds / config('const.time.hour_as_seconds');
+        return round($hour, config('const.convert_second_to_hour.round_num'));
     }
 }

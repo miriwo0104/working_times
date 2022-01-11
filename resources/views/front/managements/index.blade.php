@@ -79,18 +79,18 @@
                             <thead>
                                 <tr>
                                     <th scope="col">日にち</th>
-                                    <th scope="col">働いた時間</th>
-                                    <th scope="col">実稼働時間</th>
-                                    <th scope="col">休憩時間</th>
+                                    <th scope="col">稼働時間（h）</th>
+                                    <th scope="col">実稼働時間（h）</th>
+                                    <th scope="col">休憩時間（h）</th>
                                 </tr>
                             </thead>
                             @foreach ($pastDays as $pastDay)
                                 <tbody>
                                     <tr>
                                         <td>{{ $pastDay['date'] }}</td>
-                                        <td>{{ $pastDay['total_work_seconds'] }}</td>
-                                        <td>{{ $pastDay['total_actual_work_seconds'] }}</td>
-                                        <td>{{ $pastDay['total_rest_seconds'] }}</td>
+                                        <td>{{ $pastDay['total_work_hour'] }}</td>
+                                        <td>{{ $pastDay['total_actual_work_hour'] }}</td>
+                                        <td>{{ $pastDay['total_rest_hour'] }}</td>
                                     </tr>
                                 </tbody>
                             @endforeach
