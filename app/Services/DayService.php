@@ -31,6 +31,12 @@ class DayService
         return $this->dayRepository->register($daysInfo);
     }
 
+    /**
+     * idからdaysテーブルの情報を返す
+     *
+     * @param integer $id
+     * @return Day|null
+     */
     public function getById(int $id) : ?Day
     {
         return $this->dayRepository->getById($id);

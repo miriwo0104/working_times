@@ -16,4 +16,7 @@ return [
     'convert_second_to_hour' => [
         'round_num' => 2,
     ],
+    'work_time' => [
+        'default' => 8,
+    ],
 ];

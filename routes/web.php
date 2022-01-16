@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\ManagementController;
+use App\Http\Controllers\Front\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,15 +26,18 @@ Route::get('/dashboard', function () {
 require __DIR__.'/auth.php';
 
 // 認証必須
-Route::middleware('auth')->prefix('management')->name('management.')->group(function () {
-    // 出勤退勤休憩登録ページ
-    Route::get('/index', [ManagementController::class, 'index'])->name('index');
-    // 出勤登録
-    Route::post('/register/start/work', [ManagementController::class, 'startWork'])->name('start.work');
-    // 退勤登録
-    Route::post('/register/end/work', [ManagementController::class, 'endWork'])->name('end.work');
-    // 休憩開始登録
-    Route::post('/register/start/rest', [ManagementController::class, 'startRest'])->name('start.rest');
-    // 休憩終了登録
-    Route::post('/register/end/rest', [ManagementController::class, 'endRest'])->name('end.rest');
+Route::group(['middleware' => 'auth'], function(){
+    // 勤怠系
+    Route::group(['prefix' => 'management', 'as' => 'management.'], function(){
+        Route::get('/index', [ManagementController::class, 'index'])->name('index'); //出勤退勤休憩登録ページ
+        Route::post('/register/start/work', [ManagementController::class, 'startWork'])->name('start.work'); //出勤登録
+        Route::post('/register/end/work', [ManagementController::class, 'endWork'])->name('end.work'); //退勤登録
+        Route::post('/register/start/rest', [ManagementController::class, 'startRest'])->name('start.rest'); //休憩開始登録
+        Route::post('/register/end/rest', [ManagementController::class, 'endRest'])->name('end.rest'); //休憩終了登録
+    });
+    // ユーザー系
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
+        Route::get('/setting', [UserController::class, 'setting'])->name('setting'); //設定
+        Route::post('/setting/update', [UserController::class, 'update'])->name('setting.update'); //設定
+    });
 });

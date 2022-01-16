@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->unsignedTinyInteger('default_work_time')->default(8)->comment('基本勤務時間');
             $table->timestamps();
         });
     }
