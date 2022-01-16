@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'name' => 'test',
             'email' => 'test@example.com',
             'password' => '$2y$10$aWK6x3DcU68kJ38ap5Otu.btHbH6YdWOd18GLgF4l6li4BWpg0Z3y',
+            'default_work_time' => 8,
             'created_at' => $now,
             'updated_at' => $now,
         ]);

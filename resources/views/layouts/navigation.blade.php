@@ -44,6 +44,11 @@
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
+                            <a href="{{ route('user.setting') }}">
+                                <x-dropdown-link>
+                                    User Setting
+                                </x-dropdown-link>
+                            </a>
                     </x-slot>
                 </x-dropdown>
             </div>
