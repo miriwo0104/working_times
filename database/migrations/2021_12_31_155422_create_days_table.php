@@ -22,6 +22,7 @@ class CreateDaysTable extends Migration
             $table->integer('total_work_seconds')->nullable()->comment('労働開始日時から労働終了日時までの合計秒数');
             $table->integer('total_rest_seconds')->nullable()->comment('日毎の休憩時間の合計秒数');
             $table->integer('total_actual_work_seconds')->nullable()->comment('実働時間の合計秒数');
+            $table->integer('total_overtime_seconds')->nullable()->comment('残業時間の合計秒数');
             $table->softDeletes();
             $table->timestamps();
         });
