@@ -20,6 +20,7 @@ class Day extends Model
         'total_work_seconds',
         'total_rest_seconds',
         'total_actual_work_seconds',
+        'total_overtime_seconds',
     ];
 
     public function works()

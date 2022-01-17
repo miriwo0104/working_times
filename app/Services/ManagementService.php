@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Services\DayService;
 use App\Services\WorkService;
 use App\Services\RestService;
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Models\Day;
@@ -25,19 +26,25 @@ class ManagementService
     private $workService;
 
     /**
-     *
      * @var RestService
      */
     private $restService;
 
+    /**
+     * @var UserService
+     */
+    private $userService;
+
     public function __construct(
         DayService $dayService,
         WorkService $workService,
-        RestService $restService
+        RestService $restService,
+        UserService $userService
     ) {
         $this->dayService = $dayService;
         $this->workService = $workService;
         $this->restService = $restService;
+        $this->userService = $userService;
     }
 
     /**
@@ -128,7 +135,7 @@ class ManagementService
         try {
             DB::beginTransaction();
 
-            $days = $this->dayService->getById($daysId);
+            $users = $this->userService->getById(Auth::id());
 
             // 現時点での仕事の合計時間（秒）
             $worksTotalTimeSeconds = $this->workService->totalSeconds($daysId);
@@ -136,11 +143,17 @@ class ManagementService
             $restsTotalTimeSeconds = $this->restService->totalSeconds($daysId);
             // 実働時間算出
             $actualWorkTimeSeconds = $worksTotalTimeSeconds - $restsTotalTimeSeconds;
+            // 残業時間の算出
+            $default_work_seconds = $users->default_work_time * config('const.time.hour_as_seconds');
+            $total_overtime_seconds = $actualWorkTimeSeconds - $default_work_seconds;
+            // 残業時間が負の場合、$total_overtime_secondsには0を格納する
+            $total_overtime_seconds = $total_overtime_seconds > 0 ? $total_overtime_seconds : 0;
 
             $daysInfo = [
                 'total_work_seconds' => $worksTotalTimeSeconds,
                 'total_rest_seconds' => $restsTotalTimeSeconds,
                 'total_actual_work_seconds' => $actualWorkTimeSeconds,
+                'total_overtime_seconds' => $total_overtime_seconds,
             ];
             $this->dayService->update($daysId, $daysInfo);
 
@@ -277,6 +290,7 @@ class ManagementService
                     $pastDay['total_work_hour'] = $this->convertSecondsToHour($pastDay['total_work_seconds']);
                     $pastDay['total_actual_work_hour'] = $this->convertSecondsToHour($pastDay['total_actual_work_seconds']);
                     $pastDay['total_rest_hour'] = $this->convertSecondsToHour($pastDay['total_rest_seconds']);
+                    $pastDay['total_overtime_hour'] = $this->convertSecondsToHour($pastDay['total_overtime_seconds']);
                 }
             }
 
@@ -289,7 +303,7 @@ class ManagementService
 
     /**
      * 秒数を時間に直す
-     * 時間は少数第二位までのfloadで返す
+     * 時間は少数第二位までのfloatで返す
      *
      * @param integer $seconds
      * @return float

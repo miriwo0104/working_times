@@ -82,6 +82,7 @@
                                     <th scope="col">稼働時間（h）</th>
                                     <th scope="col">実稼働時間（h）</th>
                                     <th scope="col">休憩時間（h）</th>
+                                    <th scope="col">残業時間（h）</th>
                                 </tr>
                             </thead>
                             @foreach ($pastDays as $pastDay)
@@ -91,6 +92,7 @@
                                         <td>{{ $pastDay['total_work_hour'] }}</td>
                                         <td>{{ $pastDay['total_actual_work_hour'] }}</td>
                                         <td>{{ $pastDay['total_rest_hour'] }}</td>
+                                        <td>{{ $pastDay['total_overtime_hour'] }}</td>
                                     </tr>
                                 </tbody>
                             @endforeach

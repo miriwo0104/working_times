@@ -17,6 +17,9 @@ return [
         'round_num' => 2,
     ],
     'work_time' => [
-        'default' => 8,
+        'default' => [
+            'hour' => 8,
+            'seconds' => 28800,
+        ],
     ],
 ];
