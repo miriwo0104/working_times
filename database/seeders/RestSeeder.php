@@ -15,7 +15,7 @@ class RestSeeder extends Seeder
      */
     public function run()
     {
-        $now = Carbon::now();
+/*         $now = Carbon::now();
         DB::table('rests')->insert([
             'id' => 1,
             'days_id' => 1,
@@ -23,6 +23,6 @@ class RestSeeder extends Seeder
             'end_date_time' => '2022-01-01 00:03:10',
             'created_at' => '2022-01-01 00:03:00',
             'updated_at' => '2022-01-01 00:03:10',
-        ]);
+        ]); */
     }
 }

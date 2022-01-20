@@ -15,7 +15,7 @@ class DaySeeder extends Seeder
      */
     public function run()
     {
-        $now = Carbon::now();
+/*         $now = Carbon::now();
         DB::table('days')->insert([
             'id' => 1,
             'user_id' => 1,
@@ -41,6 +41,6 @@ class DaySeeder extends Seeder
             'total_overtime_seconds' => null,
             'created_at' => $now->format('Y-m-d H:i:s'),
             'updated_at' => $now->format('Y-m-d H:i:s'),
-        ]);
+        ]); */
     }
 }

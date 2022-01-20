@@ -15,7 +15,7 @@ class WorkSeeder extends Seeder
      */
     public function run()
     {
-        $now = Carbon::now();
+/*         $now = Carbon::now();
         DB::table('works')->insert([
             'id' => 1,
             'days_id' => 1,
@@ -31,6 +31,6 @@ class WorkSeeder extends Seeder
             'end_date_time' => null,
             'created_at' => $now->format('Y-m-d H:i:s'),
             'updated_at' => $now->format('Y-m-d H:i:s'),
-        ]);
+        ]); */
     }
 }
