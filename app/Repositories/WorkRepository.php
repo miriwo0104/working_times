@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Work;
+use Illuminate\Database\Eloquent\Collection;
 
 class WorkRepository implements WorkRepositoryInterface
 {
@@ -31,12 +32,12 @@ class WorkRepository implements WorkRepositoryInterface
     /**
      * idからレコードを取得して返す
      *
-     * @param integer $id
+     * @param integer $works_id
      * @return Work|null
      */
-    public function getById(int $id) : ?Work
+    public function getById(int $works_id) : ?Work
     {
-        return $this->work->find($id);
+        return $this->work->find($works_id);
     }
 
     /**
@@ -55,13 +56,13 @@ class WorkRepository implements WorkRepositoryInterface
     /**
      * days.idを使って勤務中のレコードを取得して返す
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return Work|null
      */
-    public function getByDaysId(int $daysId) : ?Work
+    public function getByDaysId(int $days_id) : ?Work
     {
         return $this->work
-                    ->where('days_id', $daysId)
+                    ->where('days_id', $days_id)
                     ->whereNull('end_date_time')
                     ->first();
     }
@@ -69,13 +70,13 @@ class WorkRepository implements WorkRepositoryInterface
     /**
      * days.idに紐づく勤務情報を返す
      *
-     * @param integer $daysId
-     * @return Work|null
+     * @param integer $days_id
+     * @return Collection|null
      */
-    public function total(int $daysId)
+    public function total(int $days_id) : ?Collection
     {
         return $this->work
-                    ->where('days_id', $daysId)
+                    ->where('days_id', $days_id)
                     ->get();
     }
 }

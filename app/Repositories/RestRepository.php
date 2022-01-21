@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Rest;
+use Illuminate\Database\Eloquent\Collection;
 
 class RestRepository implements RestRepositoryInterface
 {
@@ -31,12 +32,12 @@ class RestRepository implements RestRepositoryInterface
     /**
      * idからレコードを取得して返す
      *
-     * @param integer $id
+     * @param integer $rests_id
      * @return Rest|null
      */
-    public function getById(int $id) : ?Rest
+    public function getById(int $rests_id) : ?Rest
     {
-        return $this->rest->find($id);
+        return $this->rest->find($rests_id);
     }
 
     /**
@@ -55,13 +56,13 @@ class RestRepository implements RestRepositoryInterface
     /**
      * days.idを使って休憩中のレコードを取得して返す
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return Rest|null
      */
-    public function getByDaysId(int $daysId) : ?Rest
+    public function getByDaysId(int $days_id) : ?Rest
     {
         return $this->rest
-                    ->where('days_id', $daysId)
+                    ->where('days_id', $days_id)
                     ->whereNull('end_date_time')
                     ->first();
     }
@@ -69,13 +70,13 @@ class RestRepository implements RestRepositoryInterface
     /**
      * days.idに紐づく休憩情報返す
      *
-     * @param integer $daysId
-     * @return Rest|null
+     * @param integer $days_id
+     * @return Collection|null
      */
-    public function total(int $daysId)
+    public function total(int $days_id) : ?Collection
     {
         return $this->rest
-                    ->where('days_id', $daysId)
+                    ->where('days_id', $days_id)
                     ->get();
     }
 }
