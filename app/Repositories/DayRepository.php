@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Day;
+use Illuminate\Database\Eloquent\Collection;
 
 class DayRepository implements DayRepositoryInterface
 {
@@ -87,9 +88,9 @@ class DayRepository implements DayRepositoryInterface
      * 本日を含む過去の勤怠情報を返す
      *
      * @param array $daysInfo
-     * @return array|null
+     * @return Collection|null
      */
-    public function getPastByUserIdAndDate(array $daysInfo) : ?array
+    public function getPastByUserIdAndDate(array $daysInfo) : ?Collection
     {
         return $this->day
                     ->where('user_id', $daysInfo['user_id'])
@@ -97,7 +98,6 @@ class DayRepository implements DayRepositoryInterface
                     ->where('resting_flag', config('const.flag.false'))
                     ->where('date', '<=' ,$daysInfo['date'])
                     ->orderBy('created_at', 'desc')
-                    ->get()
-                    ->toArray();
+                    ->get();
     }
 }
