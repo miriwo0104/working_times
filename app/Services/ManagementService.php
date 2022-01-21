@@ -282,7 +282,7 @@ class ManagementService
                 'date' => $nowDateTime->format('Y-m-d'),
             ];
 
-            $pastDays = $this->dayService->getPastByUserIdAndDate($daysInfo);
+            $pastDays = $this->dayService->getPastByUserIdAndDate($daysInfo)->toArray();
 
             // 秒数 → 時間への変換
             if (isset($pastDays)) {

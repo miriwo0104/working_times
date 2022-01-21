@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\DayRepository;
 use Carbon\Carbon;
 use App\Models\Day;
+use Illuminate\Database\Eloquent\Collection;
 
 class DayService
 {
@@ -105,9 +106,9 @@ class DayService
      * 本日を含む過去の勤怠情報を返す
      *
      * @param array $daysInfo
-     * @return array|null
+     * @return Collection|null
      */
-    public function getPastByUserIdAndDate(array $daysInfo) : ?array
+    public function getPastByUserIdAndDate(array $daysInfo) : ?Collection
     {
         return $this->dayRepository->getPastByUserIdAndDate($daysInfo);
     }
