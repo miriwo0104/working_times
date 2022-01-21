@@ -78,18 +78,24 @@ class RestService
         return $this->restRepository->getByDaysId($daysId);
     }
 
-    public function totalSeconds(int $daysId)
+    /**
+     * 合計秒数を算出する
+     *
+     * @param integer $daysId
+     * @return integer $total_time_seconds
+     */
+    public function totalSeconds(int $daysId) : int
     {
-        $works = $this->restRepository->total($daysId);
+        $rests = $this->restRepository->total($daysId)->toArray();
 
-        $totalTimeSeconds = 0;
-        foreach ($works as $work) {
-            $startDateTime = new Carbon($work['start_date_time']);
-            $endDateTime = new Carbon($work['end_date_time']);
+        $total_time_seconds = config('const.variable_initial_value');
+        foreach ($rests as $rest) {
+            $startDateTime = new Carbon($rest['start_date_time']);
+            $endDateTime = new Carbon($rest['end_date_time']);
 
-            $totalTimeSeconds = $totalTimeSeconds + $startDateTime->diffInSeconds($endDateTime);
+            $total_time_seconds = $total_time_seconds + $startDateTime->diffInSeconds($endDateTime);
         }
 
-        return $totalTimeSeconds;
+        return $total_time_seconds;
     }
 }

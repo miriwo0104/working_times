@@ -34,7 +34,6 @@ class ManagementController extends Controller
         ]);
     }
 
-
     /**
      * 出勤登録
      *

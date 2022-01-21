@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserRepository implements UserRepositoryInterface
 {

@@ -32,12 +32,12 @@ class DayRepository implements DayRepositoryInterface
     /**
      * idからレコードを取得して返す
      *
-     * @param integer $id
+     * @param integer $days_id
      * @return Day|null
      */
-    public function getById(int $id) : ?Day
+    public function getById(int $days_id) : ?Day
     {
-        return $this->day->find($id);
+        return $this->day->find($days_id);
     }
 
     /**
@@ -74,13 +74,13 @@ class DayRepository implements DayRepositoryInterface
      * daysテーブルの更新
      * 更新に影響を与えたレコード数を返す
      *
-     * @param integer $id
+     * @param integer $days_id
      * @param array $daysInfo
      * @return integer|null
      */
-    public function update(int $id, array $daysInfo) : ?int
+    public function update(int $days_id, array $daysInfo) : ?int
     {
-        $days = $this->getById($id);
+        $days = $this->getById($days_id);
         return $days->update($daysInfo);
     }
 

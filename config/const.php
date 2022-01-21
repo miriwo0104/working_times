@@ -8,6 +8,7 @@ return [
     'day_num' => [
         'one' => 1,
     ],
+    'variable_initial_value' => 0,
     'time' => [
         'hour_as_seconds' => 3600,
         'hour_as_minutes' => 60,

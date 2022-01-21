@@ -52,26 +52,32 @@ class WorkService
     /**
      * daysテーブルのidから勤務中のworksテーブルの情報を返す
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return Work|null
      */
-    public function getByDaysId(int $daysId) : ?Work
+    public function getByDaysId(int $days_id) : ?Work
     {
-        return $this->workRepository->getByDaysId($daysId);
+        return $this->workRepository->getByDaysId($days_id);
     }
 
-    public function totalSeconds(int $daysId)
+    /**
+     * 合計秒数を算出する
+     *
+     * @param integer $days_id
+     * @return integer 
+     */
+    public function totalSeconds(int $days_id): int
     {
-        $works = $this->workRepository->total($daysId);
+        $works = $this->workRepository->total($days_id);
 
-        $totalTimeSeconds = 0;
+        $total_time_seconds = config('const.variable_initial_value');
         foreach ($works as $work) {
             $startDateTime = new Carbon($work['start_date_time']);
             $endDateTime = new Carbon($work['end_date_time']);
 
-            $totalTimeSeconds = $totalTimeSeconds + $startDateTime->diffInSeconds($endDateTime);
+            $total_time_seconds = $total_time_seconds + $startDateTime->diffInSeconds($endDateTime);
         }
 
-        return $totalTimeSeconds;
+        return $total_time_seconds;
     }
 }
