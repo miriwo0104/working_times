@@ -33,14 +33,25 @@ class DayService
     }
 
     /**
-     * idからdaysテーブルの情報を返す
+     * days.idからdaysテーブルの情報を返す
      *
-     * @param integer $id
+     * @param integer $days_id
      * @return Day|null
      */
-    public function getById(int $id) : ?Day
+    public function getById(int $days_id) : ?Day
     {
-        return $this->dayRepository->getById($id);
+        return $this->dayRepository->getById($days_id);
+    }
+
+    /**
+     * days.idからdaysテーブルと紐づく works restsテーブルの情報を返す
+     *
+     * @param integer $days_id
+     * @return Day|null
+     */
+    public function getByIdWithWorkAndRest(int $days_id) : ?Day
+    {
+        return $this->dayRepository->getByIdWithWorkAndRest($days_id);
     }
 
     /**

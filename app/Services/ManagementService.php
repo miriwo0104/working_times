@@ -130,7 +130,13 @@ class ManagementService
         return true;
     }
 
-    public function dayTotal(int $daysId)
+    /**
+     * 日にちのトータル時間を算出して保存する
+     *
+     * @param integer $daysId
+     * @return void
+     */
+    public function dayTotal(int $daysId) : bool
     {
         try {
             DB::beginTransaction();
@@ -161,7 +167,9 @@ class ManagementService
         } catch (\Throwable $th) {
             DB::rollBack();
             throw $th;
+            return false;
         }
+        return true;
     }
 
     /**
@@ -243,7 +251,7 @@ class ManagementService
      *
      * @return Day|null
      */
-    public function getDays()
+    public function getWorkingDays()
     {
         try {
             $nowDateTime = Carbon::now();
@@ -264,6 +272,17 @@ class ManagementService
         }
 
         return $days;
+    }
+
+    /**
+     * days.idからdaysテーブルと紐づく works restsテーブルの情報を返す
+     *
+     * @param integer $days_id
+     * @return Day|null
+     */
+    public function getDays(int $days_id) : ?Day
+    {
+        return $this->dayService->getByIdWithWorkAndRest($days_id);
     }
 
     /**

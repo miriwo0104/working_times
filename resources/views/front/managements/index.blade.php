@@ -74,7 +74,7 @@
                     <div>
                         <h5>過去の勤怠情報</h5>
                     </div>
-                    @if (isset($pastDays))
+                    @if (isset($pastDays[0]))
                         <table class="table">
                             <thead>
                                 <tr>
@@ -83,20 +83,28 @@
                                     <th scope="col">実稼働時間（h）</th>
                                     <th scope="col">休憩時間（h）</th>
                                     <th scope="col">残業時間（h）</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
+                            <tbody>
                             @foreach ($pastDays as $pastDay)
-                                <tbody>
-                                    <tr>
-                                        <td>{{ $pastDay['date'] }}</td>
-                                        <td>{{ $pastDay['total_work_hour'] }}</td>
-                                        <td>{{ $pastDay['total_actual_work_hour'] }}</td>
-                                        <td>{{ $pastDay['total_rest_hour'] }}</td>
-                                        <td>{{ $pastDay['total_overtime_hour'] }}</td>
-                                    </tr>
-                                </tbody>
+                                <tr>
+                                    <td>{{ $pastDay['date'] }}</td>
+                                    <td>{{ $pastDay['total_work_hour'] }}</td>
+                                    <td>{{ $pastDay['total_actual_work_hour'] }}</td>
+                                    <td>{{ $pastDay['total_rest_hour'] }}</td>
+                                    <td>{{ $pastDay['total_overtime_hour'] }}</td>
+                                    <td>
+                                        <a href="{{ route('management.detail', ['days_id' => $pastDay['id']]) }}">
+                                            <button type="button" class="btn btn-secondary">詳細</button>
+                                        </a>
+                                    </td>
+                                </tr>
                             @endforeach
+                            </tbody>
                         </table>
+                    @else
+                        <h6>過去の勤怠情報はありません</h6>
                     @endif
                 </div>
             </div>
