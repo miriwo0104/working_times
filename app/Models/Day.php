@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Work;
+use App\Models\Rest;
 
 class Day extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'user_id',
@@ -23,8 +23,21 @@ class Day extends Model
         'total_overtime_seconds',
     ];
 
+    /**
+     * worksテーブルとのリレーション
+     *
+     */
     public function works()
     {
-        return $this->hasMany(Work::class, 'id', 'days_id');
+        return $this->hasMany(Work::class, 'days_id');
+    }
+
+    /**
+     * restsテーブルとのリレーション
+     *
+     */
+    public function rests()
+    {
+        return $this->hasMany(Rest::class, 'days_id');
     }
 }

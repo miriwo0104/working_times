@@ -26,7 +26,7 @@ class ManagementController extends Controller
      */
     public function index()
     {
-        $days = $this->managementService->getDays();
+        $days = $this->managementService->getWorkingDays();
         $pastDays = $this->managementService->getPastDays();
         return view('front/managements/index', [
             'days' => $days,
@@ -64,6 +64,10 @@ class ManagementController extends Controller
         }
     }
 
+    /**
+     * 休憩開始登録
+     *
+     */
     public function startRest()
     {
         $registerResult = $this->managementService->startRest();
@@ -75,6 +79,10 @@ class ManagementController extends Controller
         }
     }
 
+    /**
+     * 休憩終了登録
+     *
+     */
     public function endRest()
     {
         $registerResult = $this->managementService->endRest();
@@ -83,6 +91,23 @@ class ManagementController extends Controller
             return redirect(route('management.index'));
         } else {
             return '保存失敗';
+        }
+    }
+
+    /**
+     * 勤怠詳細ページ
+     *
+     * @param integer $days_id
+     * @return void
+     */
+    public function detail(int $days_id)
+    {
+        $days = $this->managementService->getDays($days_id);
+
+        if (isset($days)) {
+            return view('front.managements.detail', ['days' => $days]);
+        } else {
+            return '表示データ取得失敗';
         }
     }
 }
