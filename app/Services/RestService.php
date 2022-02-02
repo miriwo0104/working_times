@@ -70,23 +70,34 @@ class RestService
     /**
      * daysテーブルのidから勤務中のrestsテーブルの情報を返す
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return Rest|null
      */
-    public function getByDaysId(int $daysId) : ?Rest
+    public function getByDaysId(int $days_id) : ?Rest
     {
-        return $this->restRepository->getByDaysId($daysId);
+        return $this->restRepository->getByDaysId($days_id);
+    }
+
+    /**
+     * restsテーブルのidからレコードを1件取得して返す
+     *
+     * @param integer $rests_id
+     * @return Rest|null
+     */
+    public function getById(int $rests_id) : ?Rest
+    {
+        return $this->restRepository->getById($rests_id);
     }
 
     /**
      * 合計秒数を算出する
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return integer $total_time_seconds
      */
-    public function totalSeconds(int $daysId) : int
+    public function totalSeconds(int $days_id) : int
     {
-        $rests = $this->restRepository->total($daysId)->toArray();
+        $rests = $this->restRepository->total($days_id)->toArray();
 
         $total_time_seconds = config('const.variable_initial_value');
         foreach ($rests as $rest) {

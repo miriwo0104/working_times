@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\ManagementController;
 use App\Http\Controllers\Front\UserController;
+use App\Services\ManagementService;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,8 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post('/register/start/rest', [ManagementController::class, 'startRest'])->name('start.rest'); // 休憩開始登録
         Route::post('/register/end/rest', [ManagementController::class, 'endRest'])->name('end.rest'); // 休憩終了登録
         Route::get('/detail/{days_id}', [ManagementController::class, 'detail'])->name('detail'); // 日毎の詳細ページ
+        Route::get('/edit/input/rest/{rests_id}', [ManagementController::class, 'editInputRest'])->name('edit.input.rest'); // 休憩編集ページ
+        Route::get('/edit/input/work/{works_id}', [ManagementController::class, 'editInputWork'])->name('edit.input.work'); // 勤務編集ページ
     });
     // ユーザー系
     Route::group(['prefix' => 'user', 'as' => 'user.'], function(){

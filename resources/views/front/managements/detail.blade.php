@@ -29,7 +29,7 @@
                                             <td>{{ $work['start_date_time'] }}</td>
                                             <td>{{ $work['end_date_time'] }}</td>
                                             <td>
-                                                <a href="">
+                                                <a href="{{ route('management.edit.input.work', ['works_id' => $work['id']]) }}">
                                                     <button class="btn btn-info">編集</button>
                                                 </a>
                                                 <a href="">
@@ -61,7 +61,7 @@
                                             <td>{{ $rest['start_date_time'] }}</td>
                                             <td>{{ $rest['end_date_time'] }}</td>
                                             <td>
-                                                <a href="">
+                                                <a href="{{ route('management.edit.input.rest', ['rests_id' => $rest['id']]) }}">
                                                     <button class="btn btn-info">編集</button>
                                                 </a>
                                                 <a href="">
