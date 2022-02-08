@@ -23,4 +23,8 @@ return [
             'seconds' => 28800,
         ],
     ],
+    'over_time' => [
+        'zero' => 0,
+        'default' => 0,
+    ],
 ];

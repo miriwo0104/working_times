@@ -158,9 +158,12 @@ class ManagementController extends Controller
     public function editUpdateRest(int $days_id, int $rests_id, RestUpdateRequest $request)
     {
         $restInfo = $request->validated();
-        $update_result = $this->restService->update($rests_id, $restInfo);
+        // 休憩情報の更新
+        $rests_update_result = $this->restService->update($rests_id, $restInfo);
+        // 労働情報の更新
+        $days_update_result = $this->managementService->dayTotal($days_id);
 
-        if ($update_result) {
+        if ($rests_update_result && $days_update_result) {
             return redirect(route('management.detail', ['days_id' => $days_id]));
         } else {
             return '休憩情報更新失敗';

@@ -133,10 +133,10 @@ class ManagementService
     /**
      * 日にちのトータル時間を算出して保存する
      *
-     * @param integer $daysId
+     * @param integer $days_id
      * @return void
      */
-    public function dayTotal(int $daysId) : bool
+    public function dayTotal(int $days_id) : bool
     {
         try {
             DB::beginTransaction();
@@ -144,16 +144,16 @@ class ManagementService
             $users = $this->userService->getById(Auth::id());
 
             // 現時点での仕事の合計時間（秒）
-            $worksTotalTimeSeconds = $this->workService->totalSeconds($daysId);
+            $worksTotalTimeSeconds = $this->workService->totalSeconds($days_id);
             // 現時点での休憩の合計時間（秒）
-            $restsTotalTimeSeconds = $this->restService->totalSeconds($daysId);
-            // 実働時間算出
+            $restsTotalTimeSeconds = $this->restService->totalSeconds($days_id);
+            // 実働時間（秒）算出
             $actualWorkTimeSeconds = $worksTotalTimeSeconds - $restsTotalTimeSeconds;
-            // 残業時間の算出
+            // 残業時間（秒）の算出
             $default_work_seconds = $users->default_work_time * config('const.time.hour_as_seconds');
             $total_overtime_seconds = $actualWorkTimeSeconds - $default_work_seconds;
-            // 残業時間が負の場合、$total_overtime_secondsには0を格納する
-            $total_overtime_seconds = $total_overtime_seconds > 0 ? $total_overtime_seconds : 0;
+            // 残業時間（秒）が負の場合、$total_overtime_secondsには0を格納する
+            $total_overtime_seconds = $total_overtime_seconds > config('const.over_time') ? $total_overtime_seconds : config('const.over_time.default');
 
             $daysInfo = [
                 'total_work_seconds' => $worksTotalTimeSeconds,
@@ -161,7 +161,7 @@ class ManagementService
                 'total_actual_work_seconds' => $actualWorkTimeSeconds,
                 'total_overtime_seconds' => $total_overtime_seconds,
             ];
-            $this->dayService->update($daysId, $daysInfo);
+            $this->dayService->update($days_id, $daysInfo);
 
             DB::commit();
         } catch (\Throwable $th) {
