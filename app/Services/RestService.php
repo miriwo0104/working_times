@@ -109,4 +109,16 @@ class RestService
 
         return $total_time_seconds;
     }
+
+    /**
+     * 休憩情報更新処理
+     *
+     * @param integer $rests_id
+     * @param array $restInfo
+     * @return boolean
+     */
+    public function update(int $rests_id, array $restInfo) : bool
+    {
+        return $this->restRepository->update($rests_id, $restInfo);
+    }
 }

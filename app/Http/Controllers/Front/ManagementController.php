@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ManagementService;
 use App\Services\RestService;
 use App\Services\WorkService;
+use App\Http\Requests\RestUpdateRequest;
 
 class ManagementController extends Controller
 {
@@ -143,6 +144,25 @@ class ManagementController extends Controller
             ]);
         } else {
             return '休憩情報取得失敗';
+        }
+    }
+
+    /**
+     * 休憩情報更新処理
+     *
+     * @param integer $days_id
+     * @param integer $rests_id
+     * @param RestUpdateRequest $request
+     */
+    public function editUpdateRest(int $days_id, int $rests_id, RestUpdateRequest $request)
+    {
+        $restInfo = $request->validated();
+        $update_result = $this->restService->update($rests_id, $restInfo);
+
+        if ($update_result) {
+            return redirect(route('management.detail', ['days_id' => $days_id]));
+        } else {
+            return '休憩情報更新失敗';
         }
     }
 

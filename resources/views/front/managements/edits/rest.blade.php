@@ -13,24 +13,25 @@
                         <h1>休憩情報編集</h1>
                     </div>
                     <div>
-                        <form action="" method="post">
+                        <form action="{{ route('management.edit.update.rest', ['days_id' => $rests->days_id, 'rests_id' => $rests->id]) }}" method="post">
+                            @csrf
                             <input type="hidden" name="rests_id" value="">
                             <div>
                                 <div>
-                                    @error('rest_start_datetime')
+                                    @error('start_date_time')
                                         {{ $message }}
                                         <br>
                                     @enderror
-                                    <label for="rest_stert_datetime">休憩開始時間</label>
-                                    <input type="text" name="rest_start_datetime" id="rest_stert_datetime" value="{{ $rests->start_date_time }}">
+                                    <label for="start_date_time">休憩開始時間</label>
+                                    <input type="text" name="start_date_time" id="start_date_time" value="{{ $rests->start_date_time }}">
                                 </div>
                                 <div>
-                                    @error('rest_end_datetime')
+                                    @error('end_date_time')
                                         {{ $message }}
                                         <br>
                                     @enderror
-                                    <label for="rest_end_datetime">休憩終了時間</label>
-                                    <input type="text" name="rest_end_datetime" id="rest_end_datetime" value="{{ $rests->end_date_time }}">
+                                    <label for="end_date_time">休憩終了時間</label>
+                                    <input type="text" name="end_date_time" id="end_date_time" value="{{ $rests->end_date_time }}">
                                     <div>※yyyy-mm-dd HH:MM:SSの形式で入力してください</div>
                                 </div>
                                 <button class="btn btn-primary" type="submit">保存</button>
