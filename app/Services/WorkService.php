@@ -91,4 +91,16 @@ class WorkService
 
         return $total_time_seconds;
     }
+
+    /**
+     * 勤務情報更新処理
+     *
+     * @param integer $works_id
+     * @param array $worksInfo
+     * @return boolean
+     */
+    public function update(int $works_id, array $worksInfo) : bool
+    {
+        return $this->workRepository->update($works_id, $worksInfo);
+    }
 }

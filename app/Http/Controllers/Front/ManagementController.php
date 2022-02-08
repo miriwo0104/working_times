@@ -7,6 +7,7 @@ use App\Services\ManagementService;
 use App\Services\RestService;
 use App\Services\WorkService;
 use App\Http\Requests\RestUpdateRequest;
+use App\Http\Requests\WorkUpdateRequest;
 
 class ManagementController extends Controller
 {
@@ -181,6 +182,25 @@ class ManagementController extends Controller
             ]);
         } else {
             return '勤務情報取得失敗';
+        }
+    }
+
+    /**
+     * 勤務情報更新処理
+     *
+     * @param integer $days_id
+     * @param integer $works_id
+     * @param WorkUpdateRequest $request
+     */
+    public function editUpdateWork(int $days_id, int $works_id, WorkUpdateRequest $request)
+    {
+        $worksInfo = $request->validated();
+        $update_result = $this->workService->update($works_id, $worksInfo);
+
+        if ($update_result) {
+            return redirect(route('management.detail', ['days_id' => $days_id]));
+        } else {
+            return '勤務情報更新失敗';
         }
     }
 }

@@ -79,4 +79,17 @@ class WorkRepository implements WorkRepositoryInterface
                     ->where('days_id', $days_id)
                     ->get();
     }
+
+    /**
+     * 勤務情報更新処理
+     *
+     * @param integer $works_id
+     * @param array $worksInfo
+     * @return boolean
+     */
+    public function update(int $works_id, array $worksInfo) : bool
+    {
+        $works = $this->getById($works_id);
+        return $works->update($worksInfo);
+    }
 }

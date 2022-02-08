@@ -39,6 +39,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::get('/edit/input/rest/{rests_id}', [ManagementController::class, 'editInputRest'])->name('edit.input.rest'); // 休憩編集ページ
         Route::post('/edit/update/rest/{days_id}/{rests_id}', [ManagementController::class, 'editUpdateRest'])->name('edit.update.rest'); // 休憩情報更新
         Route::get('/edit/input/work/{works_id}', [ManagementController::class, 'editInputWork'])->name('edit.input.work'); // 勤務編集ページ
+        Route::post('/edit/update/work/{days_id}/{works_id}', [ManagementController::class, 'editUpdateWork'])->name('edit.update.work'); // 勤務情報更新
     });
     // ユーザー系
     Route::group(['prefix' => 'user', 'as' => 'user.'], function(){
