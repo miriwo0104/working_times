@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Services\ManagementService;
+use App\Services\RestService;
+use App\Services\WorkService;
+use App\Http\Requests\RestUpdateRequest;
 
 class ManagementController extends Controller
 {
@@ -13,10 +16,24 @@ class ManagementController extends Controller
      */
     private $managementService;
 
+    /**
+     * @var RestService
+     */
+    private $restService;
+
+    /**
+     * @var WorkService
+     */
+    private $workService;
+
     public function __construct(
-        ManagementService $managementService
+        ManagementService $managementService,
+        RestService $restService,
+        WorkService $workService
     ) {
         $this->managementService = $managementService;
+        $this->restService = $restService;
+        $this->workService = $workService;
     }
 
     /**
@@ -28,7 +45,7 @@ class ManagementController extends Controller
     {
         $days = $this->managementService->getWorkingDays();
         $pastDays = $this->managementService->getPastDays();
-        return view('front/managements/index', [
+        return view('front.managements.index', [
             'days' => $days,
             'pastDays' => $pastDays,
         ]);
@@ -98,16 +115,72 @@ class ManagementController extends Controller
      * 勤怠詳細ページ
      *
      * @param integer $days_id
-     * @return void
      */
     public function detail(int $days_id)
     {
         $days = $this->managementService->getDays($days_id);
 
         if (isset($days)) {
-            return view('front.managements.detail', ['days' => $days]);
+            return view('front.managements.detail', [
+                'days' => $days
+            ]);
         } else {
-            return '表示データ取得失敗';
+            return '表示情報取得失敗';
+        }
+    }
+
+    /**
+     * 休憩編集ページ
+     *
+     * @param integer $rests_id
+     */
+    public function editInputRest(int $rests_id)
+    {
+        $rests = $this->restService->getById($rests_id);
+
+        if (isset($rests)) {
+            return view('front.managements.edits.rest', [
+                'rests' => $rests
+            ]);
+        } else {
+            return '休憩情報取得失敗';
+        }
+    }
+
+    /**
+     * 休憩情報更新処理
+     *
+     * @param integer $days_id
+     * @param integer $rests_id
+     * @param RestUpdateRequest $request
+     */
+    public function editUpdateRest(int $days_id, int $rests_id, RestUpdateRequest $request)
+    {
+        $restInfo = $request->validated();
+        $update_result = $this->restService->update($rests_id, $restInfo);
+
+        if ($update_result) {
+            return redirect(route('management.detail', ['days_id' => $days_id]));
+        } else {
+            return '休憩情報更新失敗';
+        }
+    }
+
+    /**
+     * 勤務編集ページ
+     *
+     * @param integer $works_id
+     */
+    public function editInputWork(int $works_id)
+    {
+        $works = $this->workService->getById($works_id);
+
+        if (isset($works)) {
+            return view('front.managements.edits.work', [
+                'works' => $works
+            ]);
+        } else {
+            return '勤務情報取得失敗';
         }
     }
 }

@@ -61,6 +61,17 @@ class WorkService
     }
 
     /**
+     * worksテーブルのidからレコードを1件取得して返す
+     *
+     * @param integer $works_id
+     * @return Work|null
+     */
+    public function getById(int $works_id) : ?Work
+    {
+        return $this->workRepository->getById($works_id);
+    }
+
+    /**
      * 合計秒数を算出する
      *
      * @param integer $days_id

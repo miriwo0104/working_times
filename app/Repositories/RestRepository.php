@@ -79,4 +79,17 @@ class RestRepository implements RestRepositoryInterface
                     ->where('days_id', $days_id)
                     ->get();
     }
+
+    /**
+     * 休憩情報更新処理
+     *
+     * @param integer $rests_id
+     * @param array $restInfo
+     * @return boolean
+     */
+    public function update(int $rests_id, array $restInfo) : bool
+    {
+        $rests = $this->getById($rests_id);
+        return $rests->update($restInfo);
+    }
 }
