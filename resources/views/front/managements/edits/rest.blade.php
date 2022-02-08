@@ -15,7 +15,6 @@
                     <div>
                         <form action="{{ route('management.edit.update.rest', ['days_id' => $rests->days_id, 'rests_id' => $rests->id]) }}" method="post">
                             @csrf
-                            <input type="hidden" name="rests_id" value="">
                             <div>
                                 <div>
                                     @error('start_date_time')
